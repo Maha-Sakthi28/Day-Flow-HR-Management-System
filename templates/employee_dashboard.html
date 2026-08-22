@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard{% endblock %}
+{% block header_title %}Dashboard{% endblock %}
+{% block content %}
+
+{% if employee %}
+<div class="welcome-banner">
+    <h2>Welcome, {{ employee.first_name }} {{ employee.last_name }}</h2>
+    <p>{{ employee.designation or 'Employee' }}{% if employee.department %} · {{ employee.department }}{% endif %}</p>
+</div>
+{% endif %}
+
+<div class="action-grid">
+    <a href="{{ url_for('employee_profile') }}" class="action-card">
+        <div class="action-icon">🧑</div>
+        <div class="action-title">My Profile</div>
+        <div class="action-desc">View and update your personal information</div>
+    </a>
+    <a href="{{ url_for('employee_attendance') }}" class="action-card">
+        <div class="action-icon">🕒</div>
+        <div class="action-title">Attendance</div>
+        <div class="action-desc">Check in, check out, and view your history</div>
+    </a>
+    <a href="{{ url_for('employee_timeoff') }}" class="action-card">
+        <div class="action-icon">📅</div>
+        <div class="action-title">Time Off</div>
+        <div class="action-desc">Request leave and track approval status</div>
+    </a>
+    <a href="{{ url_for('employee_payroll') }}" class="action-card">
+        <div class="action-icon">💰</div>
+        <div class="action-title">Payroll</div>
+        <div class="action-desc">View your salary history</div>
+    </a>
+</div>
+
+{% endblock %}

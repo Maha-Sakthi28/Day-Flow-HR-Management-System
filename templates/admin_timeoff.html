@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Time Off{% endblock %}
+{% block header_title %}Time Off Requests{% endblock %}
+{% block content %}
+
+<h2 class="section-title">All Time Off Requests</h2>
+
+<div class="table-wrapper">
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Leave Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for req in requests_list %}
+        <tr>
+            <td>{{ req.first_name }} {{ req.last_name }} ({{ req.employee_code }})</td>
+            <td>{{ req.leave_type }}</td>
+            <td>{{ req.start_date }}</td>
+            <td>{{ req.end_date }}</td>
+            <td>{{ req.reason or '-' }}</td>
+            <td><span class="badge badge-{{ req.status|lower }}">{{ req.status }}</span></td>
+            <td class="actions-cell">
+                {% if req.status == 'Pending' %}
+                <form method="POST" action="{{ url_for('admin_timeoff_approve', req_id=req.id) }}" class="inline-form timeoff-action-form">
+                    <input type="text" name="admin_comment" placeholder="Comment (optional)" class="mini-input">
+                    <button type="submit" class="btn btn-small btn-success">Approve</button>
+                </form>
+                <form method="POST" action="{{ url_for('admin_timeoff_reject', req_id=req.id) }}" class="inline-form timeoff-action-form">
+                    <input type="text" name="admin_comment" placeholder="Comment (optional)" class="mini-input">
+                    <button type="submit" class="btn btn-small btn-danger">Reject</button>
+                </form>
+                {% else %}
+                <span class="muted-text">{{ req.admin_comment or 'No comment' }}</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="empty-row">No time off requests found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

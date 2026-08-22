@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}My Attendance{% endblock %}
+{% block header_title %}Attendance{% endblock %}
+{% block content %}
+
+<div class="checkin-panel">
+    {% if not today_record %}
+        <form method="POST" action="{{ url_for('employee_check_in') }}" class="inline-form">
+            <button type="submit" class="btn btn-primary btn-large">Check In</button>
+        </form>
+        <p class="muted-text">You have not checked in today.</p>
+    {% elif not today_record.check_out %}
+        <form method="POST" action="{{ url_for('employee_check_out') }}" class="inline-form">
+            <button type="submit" class="btn btn-primary btn-large">Check Out</button>
+        </form>
+        <p class="muted-text">Checked in today at {{ today_record.check_in }}.</p>
+    {% else %}
+        <p class="muted-text">Today's attendance complete — Checked in at {{ today_record.check_in }}, checked out at {{ today_record.check_out }}.</p>
+    {% endif %}
+</div>
+
+<h2 class="section-title">Attendance History</h2>
+<div class="table-wrapper">
+<table class="data-table">
+    <thead>
+        <tr><th>Date</th><th>Check In</th><th>Check Out</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+        {% for rec in records %}
+        <tr>
+            <td>{{ rec.attendance_date }}</td>
+            <td>{{ rec.check_in or '-' }}</td>
+            <td>{{ rec.check_out or '-' }}</td>
+            <td><span class="badge badge-{{ rec.status|lower }}">{{ rec.status }}</span></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="empty-row">No attendance records yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

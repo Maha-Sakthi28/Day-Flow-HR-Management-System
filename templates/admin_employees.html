@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Employees{% endblock %}
+{% block header_title %}Employees{% endblock %}
+{% block content %}
+
+<div class="content-header-row">
+    <h2 class="section-title">All Employees</h2>
+    <a href="{{ url_for('admin_add_employee') }}" class="btn btn-primary">+ Add Employee</a>
+</div>
+
+<div class="table-wrapper">
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Employee ID</th>
+            <th>Employee Code</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Designation</th>
+            <th>Joining Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for emp in employees %}
+        <tr>
+            <td>{{ emp.id }}</td>
+            <td>{{ emp.employee_code }}</td>
+            <td>{{ emp.first_name }} {{ emp.last_name }}</td>
+            <td>{{ emp.email }}</td>
+            <td>{{ emp.department or '-' }}</td>
+            <td>{{ emp.designation or '-' }}</td>
+            <td>{{ emp.joining_date }}</td>
+            <td class="actions-cell">
+                <a href="{{ url_for('admin_employee_details', emp_id=emp.id) }}" class="btn btn-small">View</a>
+                <a href="{{ url_for('admin_edit_employee', emp_id=emp.id) }}" class="btn btn-small btn-secondary">Edit</a>
+                <form method="POST" action="{{ url_for('admin_delete_employee', emp_id=emp.id) }}" class="inline-form confirm-delete">
+                    <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="8" class="empty-row">No employees found. Add your first employee to get started.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Dayflow HR{% endblock %} | Dayflow HR Management System</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+{% if session.get('user_id') %}
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-mark">D</span>
+            <span class="brand-name">Dayflow HR</span>
+        </div>
+        <nav class="sidebar-nav">
+            {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' }}">Dashboard</a>
+                <a href="{{ url_for('admin_employees') }}" class="{{ 'active' if request.endpoint in ['admin_employees','admin_add_employee','admin_employee_details','admin_edit_employee'] }}">Employees</a>
+                <a href="{{ url_for('admin_attendance') }}" class="{{ 'active' if request.endpoint == 'admin_attendance' }}">Attendance</a>
+                <a href="{{ url_for('admin_timeoff') }}" class="{{ 'active' if request.endpoint == 'admin_timeoff' }}">Time Off</a>
+                <a href="{{ url_for('admin_payroll') }}" class="{{ 'active' if request.endpoint in ['admin_payroll','admin_payroll_edit'] }}">Payroll</a>
+            {% else %}
+                <a href="{{ url_for('employee_dashboard') }}" class="{{ 'active' if request.endpoint == 'employee_dashboard' }}">Dashboard</a>
+                <a href="{{ url_for('employee_profile') }}" class="{{ 'active' if request.endpoint == 'employee_profile' }}">My Profile</a>
+                <a href="{{ url_for('employee_attendance') }}" class="{{ 'active' if request.endpoint == 'employee_attendance' }}">Attendance</a>
+                <a href="{{ url_for('employee_timeoff') }}" class="{{ 'active' if request.endpoint == 'employee_timeoff' }}">Time Off</a>
+                <a href="{{ url_for('employee_payroll') }}" class="{{ 'active' if request.endpoint == 'employee_payroll' }}">Payroll</a>
+            {% endif %}
+            <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+        </nav>
+    </aside>
+
+    <div class="main-area">
+        <header class="top-header">
+            <div class="header-title">{% block header_title %}{% endblock %}</div>
+            <div class="header-user">
+                <span class="user-role-badge">{{ session.get('role')|capitalize }}</span>
+                <span class="user-login-id">{{ session.get('login_id') }}</span>
+            </div>
+        </header>
+
+        <main class="content-area">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}
+            {% if content_override %}<p>{{ content_override }}</p>{% endif %}
+            {% endblock %}
+        </main>
+    </div>
+</div>
+{% else %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-container auth-flash">
+            {% for category, message in messages %}
+                <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+    {% block auth_content %}
+    {% if content_override %}<p>{{ content_override }}</p>{% endif %}
+    {% endblock %}
+{% endif %}
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}My Payroll{% endblock %}
+{% block header_title %}Payroll{% endblock %}
+{% block content %}
+
+<h2 class="section-title">Salary History</h2>
+<div class="table-wrapper">
+<table class="data-table">
+    <thead>
+        <tr><th>Salary Month</th><th>Basic Salary</th><th>Allowances</th><th>Deductions</th><th>Net Salary</th></tr>
+    </thead>
+    <tbody>
+        {% for rec in payroll_records %}
+        <tr>
+            <td>{{ rec.salary_month }}</td>
+            <td>{{ rec.basic_salary }}</td>
+            <td>{{ rec.allowances }}</td>
+            <td>{{ rec.deductions }}</td>
+            <td><strong>{{ rec.net_salary }}</strong></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="empty-row">No payroll records yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

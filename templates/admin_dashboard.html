@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block header_title %}Dashboard{% endblock %}
+{% block content %}
+
+<div class="stat-grid">
+    <a href="{{ url_for('admin_employees') }}" class="stat-card">
+        <div class="stat-value">{{ total_employees }}</div>
+        <div class="stat-label">Total Employees</div>
+    </a>
+    <a href="{{ url_for('admin_attendance') }}" class="stat-card">
+        <div class="stat-value">{{ today_attendance }}</div>
+        <div class="stat-label">Today's Attendance</div>
+    </a>
+    <a href="{{ url_for('admin_timeoff') }}" class="stat-card">
+        <div class="stat-value">{{ pending_timeoff }}</div>
+        <div class="stat-label">Pending Time Off</div>
+    </a>
+    <a href="{{ url_for('admin_payroll') }}" class="stat-card">
+        <div class="stat-value">{{ payroll_count }}</div>
+        <div class="stat-label">Payroll Records</div>
+    </a>
+</div>
+
+<h2 class="section-title">Quick Actions</h2>
+<div class="action-grid">
+    <a href="{{ url_for('admin_employees') }}" class="action-card">
+        <div class="action-icon">👥</div>
+        <div class="action-title">Employees</div>
+        <div class="action-desc">View and manage all employee records</div>
+    </a>
+    <a href="{{ url_for('admin_attendance') }}" class="action-card">
+        <div class="action-icon">🕒</div>
+        <div class="action-title">Attendance</div>
+        <div class="action-desc">Review daily attendance across the company</div>
+    </a>
+    <a href="{{ url_for('admin_timeoff') }}" class="action-card">
+        <div class="action-icon">📅</div>
+        <div class="action-title">Time Off</div>
+        <div class="action-desc">Approve or reject leave requests</div>
+    </a>
+    <a href="{{ url_for('admin_add_employee') }}" class="action-card">
+        <div class="action-icon">➕</div>
+        <div class="action-title">Add Employee</div>
+        <div class="action-desc">Onboard a new employee</div>
+    </a>
+</div>
+
+{% endblock %}

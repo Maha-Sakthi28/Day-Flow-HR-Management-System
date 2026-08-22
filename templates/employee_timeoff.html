@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}My Time Off{% endblock %}
+{% block header_title %}Time Off{% endblock %}
+{% block content %}
+
+<h2 class="section-title">Request Time Off</h2>
+<div class="form-card">
+    <form method="POST" action="{{ url_for('employee_timeoff_request') }}" class="standard-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="leave_type">Leave Type</label>
+                <select id="leave_type" name="leave_type" required>
+                    <option value="">Select Type</option>
+                    <option value="Sick Leave">Sick Leave</option>
+                    <option value="Casual Leave">Casual Leave</option>
+                    <option value="Vacation">Vacation</option>
+                    <option value="Unpaid Leave">Unpaid Leave</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="start_date">Start Date</label>
+                <input type="date" id="start_date" name="start_date" required>
+            </div>
+            <div class="form-group">
+                <label for="end_date">End Date</label>
+                <input type="date" id="end_date" name="end_date" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group form-group-full">
+                <label for="reason">Reason</label>
+                <textarea id="reason" name="reason" rows="3" placeholder="Briefly describe your reason"></textarea>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Submit Request</button>
+        </div>
+    </form>
+</div>
+
+<h2 class="section-title">My Requests</h2>
+<div class="table-wrapper">
+<table class="data-table">
+    <thead>
+        <tr><th>Leave Type</th><th>Start Date</th><th>End Date</th><th>Reason</th><th>Status</th><th>Admin Comment</th></tr>
+    </thead>
+    <tbody>
+        {% for req in requests_list %}
+        <tr>
+            <td>{{ req.leave_type }}</td>
+            <td>{{ req.start_date }}</td>
+            <td>{{ req.end_date }}</td>
+            <td>{{ req.reason or '-' }}</td>
+            <td><span class="badge badge-{{ req.status|lower }}">{{ req.status }}</span></td>
+            <td>{{ req.admin_comment or '-' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="empty-row">You have not submitted any time off requests.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Payroll{% endblock %}
+{% block header_title %}Payroll{% endblock %}
+{% block content %}
+
+{% if edit_record %}
+<h2 class="section-title">Edit Payroll Record — {{ edit_record.first_name }} {{ edit_record.last_name }}</h2>
+<div class="form-card">
+    <form method="POST" action="{{ url_for('admin_payroll_edit', pay_id=edit_record.id) }}" class="standard-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="salary_month">Salary Month</label>
+                <input type="text" id="salary_month" name="salary_month" value="{{ edit_record.salary_month }}" placeholder="e.g. 2026-08" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="basic_salary">Basic Salary</label>
+                <input type="number" step="0.01" id="basic_salary" name="basic_salary" value="{{ edit_record.basic_salary }}" required>
+            </div>
+            <div class="form-group">
+                <label for="allowances">Allowances</label>
+                <input type="number" step="0.01" id="allowances" name="allowances" value="{{ edit_record.allowances }}" required>
+            </div>
+            <div class="form-group">
+                <label for="deductions">Deductions</label>
+                <input type="number" step="0.01" id="deductions" name="deductions" value="{{ edit_record.deductions }}" required>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="{{ url_for('admin_payroll') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% else %}
+
+<h2 class="section-title">Create Payroll Record</h2>
+<div class="form-card">
+    <form method="POST" action="{{ url_for('admin_payroll_add') }}" class="standard-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="user_id">Employee</label>
+                <select id="user_id" name="user_id" required>
+                    <option value="">Select Employee</option>
+                    {% for emp in employees %}
+                    <option value="{{ emp.user_id }}">{{ emp.first_name }} {{ emp.last_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="salary_month">Salary Month</label>
+                <input type="text" id="salary_month" name="salary_month" placeholder="e.g. 2026-08" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="basic_salary">Basic Salary</label>
+                <input type="number" step="0.01" id="basic_salary" name="basic_salary" required>
+            </div>
+            <div class="form-group">
+                <label for="allowances">Allowances</label>
+                <input type="number" step="0.01" id="allowances" name="allowances" value="0">
+            </div>
+            <div class="form-group">
+                <label for="deductions">Deductions</label>
+                <input type="number" step="0.01" id="deductions" name="deductions" value="0">
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Payroll Record</button>
+        </div>
+    </form>
+</div>
+
+<h2 class="section-title">All Payroll Records</h2>
+<div class="table-wrapper">
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Employee</th><th>Salary Month</th><th>Basic</th><th>Allowances</th><th>Deductions</th><th>Net Salary</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rec in payroll_records %}
+        <tr>
+            <td>{{ rec.first_name }} {{ rec.last_name }} ({{ rec.employee_code }})</td>
+            <td>{{ rec.salary_month }}</td>
+            <td>{{ rec.basic_salary }}</td>
+            <td>{{ rec.allowances }}</td>
+            <td>{{ rec.deductions }}</td>
+            <td><strong>{{ rec.net_salary }}</strong></td>
+            <td><a href="{{ url_for('admin_payroll_edit', pay_id=rec.id) }}" class="btn btn-small btn-secondary">Edit</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="empty-row">No payroll records yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endif %}
+
+{% endblock %}

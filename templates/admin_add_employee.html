@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit Employee' if edit_mode else 'Add Employee' }}{% endblock %}
+{% block header_title %}{{ 'Edit Employee' if edit_mode else 'Add Employee' }}{% endblock %}
+{% block content %}
+
+<div class="form-card">
+    <form method="POST" action="{{ url_for('admin_edit_employee', emp_id=employee.id) if edit_mode else url_for('admin_add_employee') }}" class="standard-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name" value="{{ employee.first_name if employee else '' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name" value="{{ employee.last_name if employee else '' }}" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ employee.email if employee else '' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" name="phone" value="{{ employee.phone if employee else '' }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="department">Department</label>
+                <input type="text" id="department" name="department" value="{{ employee.department if employee else '' }}">
+            </div>
+            <div class="form-group">
+                <label for="designation">Designation</label>
+                <input type="text" id="designation" name="designation" value="{{ employee.designation if employee else '' }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="joining_date">Joining Date</label>
+                <input type="date" id="joining_date" name="joining_date"
+                       value="{{ employee.joining_date if employee else '' }}" required>
+            </div>
+        </div>
+
+        {% if not edit_mode %}
+        <p class="form-note">A login ID and temporary password will be generated automatically for this employee once the record is created.</p>
+        {% endif %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">{{ 'Save Changes' if edit_mode else 'Create Employee' }}</button>
+            <a href="{{ url_for('admin_employees') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
