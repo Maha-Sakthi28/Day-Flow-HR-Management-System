@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}
+Employee Dashboard - Dayflow
+{% endblock %}
+
+
+{% block content %}
+
+<div class="dashboard">
+
+    <h1>
+        Welcome, {{ name }} 👋
+    </h1>
+
+    <p>
+        Employee Dashboard
+    </p>
+
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+
+            <h2>My Profile</h2>
+
+            <p>
+                View and manage your personal information.
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h2>Attendance</h2>
+
+            <p>
+                Check your attendance records.
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h2>Leave</h2>
+
+            <p>
+                Apply for leave and track its status.
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h2>Payroll</h2>
+
+            <p>
+                View your salary information.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
