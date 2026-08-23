@@ -151,4 +151,3 @@ git remote add origin <your-repository-url>
 git push -u origin main
 ```
 
-(`.gitignore` already excludes `venv/`, `__pycache__/`, `.env`, and editor folders — no secrets are committed.)
